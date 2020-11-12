@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "needs_converter.h"
-#include "qdbmp.h"
 
 void BMP_free(FILE_BMP* bmp){
     if (bmp == NULL){
