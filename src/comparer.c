@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "converter.h"
+#include "needs_converter.h"
 
 void Getting_Pix_RGB(FILE_BMP* bmp, unsigned long x, unsigned long y, unsigned char* r,unsigned char* g,unsigned char* b){
     unsigned char* pixel;

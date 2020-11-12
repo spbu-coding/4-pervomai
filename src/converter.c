@@ -1,4 +1,4 @@
-#include "converter.h"
+#include "needs_converter.h"
 #include "qdbmp.h"
 
 int reading_entering_args(int argc, char* argv[]) {

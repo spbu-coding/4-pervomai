@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "converter.h"
+#include "needs_converter.h"
 #include "qdbmp.h"
 
 void BMP_free(FILE_BMP* bmp){

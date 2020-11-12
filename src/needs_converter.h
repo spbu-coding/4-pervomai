@@ -1,6 +1,6 @@
 
-#ifndef UNTITLED2_CONVERTER_H
-#define UNTITLED2_CONVERTER_H
+#ifndef UNTITLED2_NEEDS_CONVERTER_H
+#define UNTITLED2_NEEDS_CONVERTER_H
 
 #define BMP_PALETTE_SIZE_8bpp ( 256 * 4 )
 #define error(...) (fprintf(stderr, __VA_ARGS__))
@@ -41,4 +41,4 @@ void Getting_Pix_RGB(FILE_BMP* bmp, unsigned long x, unsigned long y, unsigned c
 void mine_converter_negative(const char* inputFile, const char* outputFile);
 int checking_errors(const char* filename);
 
-#endif //UNTITLED2_CONVERTER_H
+#endif //UNTITLED2_NEEDS_CONVERTER_H
