@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "needs_converter.h"
-#include "qdbmp.h"
 
 void BMP_free(FILE_BMP* bmp){
     if (bmp == NULL){
@@ -39,7 +38,7 @@ FILE_BMP* Reading_BMP (const char* filename){
     }
 
     fread(&bmp->header.identifier, 1, 2, bmpFile);
-    if (&bmp->header.identifier != 0x4d42) {
+    if (bmp->header.identifier != 0x4d42) {
         error("Type of input file is not supported.\n");
         return NULL;
     }
