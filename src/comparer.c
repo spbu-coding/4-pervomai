@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include "needs_converter.h"
 
-void Getting_Pix_RGB(FILE_BMP* bmp, unsigned long x, unsigned long y, unsigned char* r,unsigned char* g,unsigned char* b){
+#define MAX_COMPARED_PIX 100
+
+void Get_Pix_RGB(FILE_BMP* bmp, unsigned long x, unsigned long y, unsigned char* r,unsigned char* g,unsigned char* b){
     unsigned char* pixel;
     unsigned long bytes_per_row;
     unsigned char bytes_per_pixel;
@@ -21,6 +23,14 @@ void Getting_Pix_RGB(FILE_BMP* bmp, unsigned long x, unsigned long y, unsigned c
         if (g) *g = *(pixel + 1);
         if (b) *b = *(pixel + 0);
     }
+}
+
+unsigned int compare_pix(unsigned char r1, unsigned char r2, unsigned char g1, unsigned char g2, unsigned char b1, unsigned char b2, unsigned int counts, long x, long y){
+    if(r1 != r2 || g1 != g2 || b1 != b2 && counts < MAX_COMPARED_PIX) {
+        counts++;
+        error("%ld %ld\n", x, y);
+    }
+    return counts;
 }
 
 int compare_bmp(const char* File_1, const char* File_2){
@@ -45,48 +55,36 @@ int compare_bmp(const char* File_1, const char* File_2){
     if(Bmp_1->header.height > 0 && Bmp_2->header.height > 0){
         for (y = 0; y < Bmp_1->header.height; y++){
             for (x = 0; x < Bmp_2->header.width; x++){
-                Getting_Pix_RGB(Bmp_1,x,y,&r1,&g1,&b1);
-                Getting_Pix_RGB(Bmp_2,x,y,&r2,&g2,&b2);
-                if(r1 != r2 || g1 != g2 || b1 != b2 && counting_not_same < 100) {
-                    counting_not_same++;
-                    error("%ld %ld\n", x, y);
-                }
+                Get_Pix_RGB(Bmp_1,x,y,&r1,&g1,&b1);
+                Get_Pix_RGB(Bmp_2,x,y,&r2,&g2,&b2);
+                counting_not_same = compare_pix(r1, r2, g1, g2, b1, b2, counting_not_same, x, y);
             }
         }
     }
     else if(Bmp_1->header.height < 0 && Bmp_2->header.height < 0){
         for (y = 0; y < abs(Bmp_1->header.height); y++){
             for (x = 0; x < Bmp_2->header.width; x++){
-                Getting_Pix_RGB(Bmp_1,x,abs(Bmp_1->header.height) - y - 1,&r1,&g1,&b1);
-                Getting_Pix_RGB(Bmp_2,x,abs(Bmp_2->header.height) - y - 1,&r2,&g2,&b2);
-                if(r1 != r2 || g1 != g2 || b1 != b2 && counting_not_same < 100) {
-                    counting_not_same++;
-                    error("%ld %ld\n", x, y);
-                }
+                Get_Pix_RGB(Bmp_1,x,abs(Bmp_1->header.height) - y - 1,&r1,&g1,&b1);
+                Get_Pix_RGB(Bmp_2,x,abs(Bmp_2->header.height) - y - 1,&r2,&g2,&b2);
+                counting_not_same = compare_pix(r1, r2, g1, g2, b1, b2, counting_not_same, x, y);
             }
         }
     }
     else if(Bmp_1->header.height > 0 && Bmp_2->header.height < 0){
         for (y = 0; y < abs(Bmp_1->header.height); y++){
             for (x = 0; x < Bmp_2->header.width; x++){
-                Getting_Pix_RGB(Bmp_1,x,y,&r1,&g1,&b1);
-                Getting_Pix_RGB(Bmp_2,x,abs(Bmp_2->header.height) - y - 1,&r2,&g2,&b2);
-                if(r1 != r2 || g1 != g2 || b1 != b2 && counting_not_same < 100) {
-                    counting_not_same++;
-                    error("%ld %ld\n", x, y);
-                }
+                Get_Pix_RGB(Bmp_1,x,y,&r1,&g1,&b1);
+                Get_Pix_RGB(Bmp_2,x,abs(Bmp_2->header.height) - y - 1,&r2,&g2,&b2);
+                counting_not_same = compare_pix(r1, r2, g1, g2, b1, b2, counting_not_same, x, y);
             }
         }
     }
     else if(Bmp_1->header.height < 0 && Bmp_2->header.height > 0){
         for (y = 0; y < abs(Bmp_1->header.height); y++){
             for (x = 0; x < Bmp_2->header.width; x++){
-                Getting_Pix_RGB(Bmp_1,x,abs(Bmp_1->header.height) - y - 1,&r1,&g1,&b1);
-                Getting_Pix_RGB(Bmp_2,x,y,&r2,&g2,&b2);
-                if(r1 != r2 || g1 != g2 || b1 != b2 && counting_not_same < 100) {
-                    counting_not_same++;
-                    error("%ld %ld\n", x, y);
-                }
+                Get_Pix_RGB(Bmp_1,x,abs(Bmp_1->header.height) - y - 1,&r1,&g1,&b1);
+                Get_Pix_RGB(Bmp_2,x,y,&r2,&g2,&b2);
+                counting_not_same = compare_pix(r1, r2, g1, g2, b1, b2, counting_not_same, x, y);
             }
         }
     }
